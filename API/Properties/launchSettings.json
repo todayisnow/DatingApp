@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "API": {
+    "WebUi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

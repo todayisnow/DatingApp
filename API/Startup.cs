@@ -1,4 +1,3 @@
-using API.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,9 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebUi.Data;
 
-
-namespace API
+namespace WebUi
 {
     public class Startup
     {
@@ -37,7 +36,7 @@ namespace API
             services.AddCors();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebUi", Version = "v1" });
             });
         }
 
@@ -48,14 +47,14 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebUi v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseCors(policy=>policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
 
             app.UseAuthorization();
 

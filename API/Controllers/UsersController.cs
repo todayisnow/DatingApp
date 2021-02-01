@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using API.Data;
-using API.Entities;
+using WebUi.Entities;
+using WebUi.Data;
 
-namespace API.Controllers
+namespace WebUi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -23,11 +20,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()=> await _context.Users.ToListAsync();
-            
-        
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers() => await _context.Users.ToListAsync();
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id) => await _context.Users.FindAsync(id);
-        
+
     }
 }

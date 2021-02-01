@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
-namespace API.Entities
+namespace WebUi.Entities
 {
-    public class AppUser 
+    public class AppUser
     {
         public int Id { get; set; }
         public string UserName { get; set; }

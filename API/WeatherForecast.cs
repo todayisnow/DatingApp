@@ -1,6 +1,6 @@
 using System;
 
-namespace API
+namespace WebUi
 {
     public class WeatherForecast
     {
