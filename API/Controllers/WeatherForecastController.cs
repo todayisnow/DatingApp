@@ -27,8 +27,9 @@ namespace WebUi.Controllers
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
-        {
+        { 
             var rng = new Random();
+            _logger.LogInformation("LOGGERSSSSSSSSSSSSSSS");
             return Enumerable.Range(1, 3).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
@@ -36,6 +37,8 @@ namespace WebUi.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+            
         }
     }
+  
 }

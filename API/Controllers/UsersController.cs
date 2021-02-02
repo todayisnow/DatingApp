@@ -7,10 +7,9 @@ using WebUi.Data;
 
 namespace WebUi.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
 
-    public class UsersController : ControllerBase
+
+    public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
 
