@@ -11,8 +11,12 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using WebUi.Data;
+using WebUi.Extensions;
 using WebUi.Interfaces;
 using WebUi.Services;
 
@@ -30,13 +34,12 @@ namespace WebUi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddDbContext<DataContext>(option =>
-            {
-                option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+            services.AddApplicationServices(Configuration);
+            services.AddIdentityServices(Configuration);
+
             services.AddControllers();
             services.AddCors();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebUi", Version = "v1" });
@@ -58,7 +61,7 @@ namespace WebUi
             app.UseRouting();
 
             app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
