@@ -1,15 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { map } from "rxjs/operators";
+import { User } from '../_models/user';
+import { ReplaySubject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   baseUrl = 'https://localhost:5001/api/';
+  private currentUserSource = new ReplaySubject<User>(1); //It buffers a set number of values and will emit those values immediately to any new subscribers in addition to emitting new values to existing subscribers.
+  currentUser$ = this.currentUserSource.asObservable();//create observable to subscribe to
   constructor(private http:HttpClient) {
 
   }
   login(model: any) {
-    return this.http.post(this.baseUrl + 'account/login', model);
+    return this.http.post(this.baseUrl + 'account/login', model).pipe(
+      map((response: User) => {//manipulate the response before subscription 
+        const user = response;
+        if (user) {
+
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSource.next(user);
+          
+        }
+      })
+      );
+  }
+  setCurrentUser(user: User) {
+    this.currentUserSource.next(user);
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    this.currentUserSource.next(null);
+
   }
 }
+
