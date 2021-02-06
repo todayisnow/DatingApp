@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr'
 })
 export class RegisterComponent implements OnInit {
   model: any = {}
- 
+  validationErrors: string[] =[];
   @Output() cancelRegister= new EventEmitter();
   constructor(private accountService:AccountService,private toastr:ToastrService) { }
 
@@ -21,8 +21,8 @@ export class RegisterComponent implements OnInit {
         this.cancel();
       },
       error => {
-        console.error(error);
-        this.toastr.error(error.error);
+        
+        this.validationErrors = error;
       });
   }
   cancel() {

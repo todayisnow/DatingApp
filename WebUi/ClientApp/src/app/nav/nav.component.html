@@ -26,8 +26,8 @@
       </div>
     </div>
     <form #loginForm="ngForm" *ngIf="(accountService.currentUser$ | async)=== null" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()" autocomplete="off">
-      <input class="form-control mr-sm-2" type="text" placeholder="Username" name="username" [(ngModel)]="model.username">
-      <input class="form-control mr-sm-2" type="password" placeholder="Password" name="password" [(ngModel)]="model.password">
+      <input class="form-control mr-sm-2" type="text" placeholder="Username" name="username" [(ngModel)]="model.username" tooltip="Username">
+      <input class="form-control mr-sm-2" type="password" placeholder="Password" name="password" [(ngModel)]="model.password" tooltip="Password">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
     </form>
 

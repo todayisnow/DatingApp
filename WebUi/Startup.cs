@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using WebUi.Data;
 using WebUi.Extensions;
 using WebUi.Interfaces;
+using WebUi.Middleware;
 using WebUi.Services;
 
 namespace WebUi
@@ -56,6 +57,7 @@ namespace WebUi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebUi v1"));
             }
 
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseRouting();
