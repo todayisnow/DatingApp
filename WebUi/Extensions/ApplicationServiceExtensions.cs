@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebUi.Data;
+using WebUi.Helpers;
 using WebUi.Interfaces;
 using WebUi.Services;
 
@@ -16,6 +17,8 @@ namespace WebUi.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(option =>
             {
                 option.UseSqlServer(config.GetConnectionString("DefaultConnection"));

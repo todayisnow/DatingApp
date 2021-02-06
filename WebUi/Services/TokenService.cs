@@ -27,7 +27,7 @@ namespace WebUi.Services
              {
                  Subject = new ClaimsIdentity(new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId,user.Username)
+                new Claim(JwtRegisteredClaimNames.NameId,user.UserName)
 
             }),
                  Expires = DateTime.Now.AddDays(7),

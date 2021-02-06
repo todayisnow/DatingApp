@@ -35,7 +35,7 @@ namespace WebUi.Controllers
 
             var user = new AppUser
             {
-                Username = registerDto.Username.ToLower(),
+                UserName = registerDto.Username.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key
             };
@@ -50,7 +50,7 @@ namespace WebUi.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.Username == loginDto.Username.ToLower());
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
             if (user != null)
             {
                 using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -64,7 +64,7 @@ namespace WebUi.Controllers
 
             return Unauthorized("Invalid Username");
         }
-        private async Task<bool> UserExits(string Username) => await _context.Users.AnyAsync(m => m.Username == Username.ToLower());
+        private async Task<bool> UserExits(string Username) => await _context.Users.AnyAsync(m => m.UserName == Username.ToLower());
         
     }
    
