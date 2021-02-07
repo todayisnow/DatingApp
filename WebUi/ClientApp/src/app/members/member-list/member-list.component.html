@@ -1,1 +1,7 @@
-<p>member-list works!</p>
+<div class="row">
+  <ng-container  *ngFor="let member of members" >
+    <div class="col-2"*ngIf="member.username!=(accountService.currentUser$ | async).username">
+      <app-member-card [member]="member"></app-member-card>
+    </div>
+  </ng-container>
+</div>

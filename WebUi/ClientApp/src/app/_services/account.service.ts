@@ -4,11 +4,15 @@ import { map } from "rxjs/operators";
 import { User } from '../_models/user';
 import { ReplaySubject } from "rxjs";
 
+
+
+import { environment } from "src/environments/environment";
+
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
   private currentUserSource = new ReplaySubject<User>(1); //It buffers a set number of values and will emit those values immediately to any new subscribers in addition to emitting new values to existing subscribers.
   currentUser$ = this.currentUserSource.asObservable();//create observable to subscribe to
   constructor(private http:HttpClient) {

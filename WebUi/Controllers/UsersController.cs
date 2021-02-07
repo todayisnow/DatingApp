@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using WebUi.Entities;
 using WebUi.Data;
 using WebUi.Dto;
+using WebUi.Extensions;
 using WebUi.Interfaces;
 
 namespace WebUi.Controllers
@@ -16,17 +17,16 @@ namespace WebUi.Controllers
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
 
 
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+
+        public UsersController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _mapper = mapper;
         }
 
         [HttpGet]
-
+        
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
             return Ok(await _userRepository.GetMembersAsync());
