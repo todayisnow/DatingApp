@@ -9,10 +9,12 @@ import { Member } from '../../_models/member';
   styleUrls: ['./member-card.component.css']
 })
 export class MemberCardComponent implements OnInit {
-  @Input() member: Member
+  @Input() member: Member;
   constructor() { }
 
   ngOnInit(): void {
+    if (this.member.photoUrl!=null)
+    this.member.photoUrl += "?"+Math.random();
   }
 
 }
