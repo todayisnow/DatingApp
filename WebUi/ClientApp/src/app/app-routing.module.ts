@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from "./home/home.component";
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { ListsComponent } from "./lists/lists.component";
 import { MessagesComponent } from "./messages/messages.component";
 import { AuthGuard } from './_guards/auth.guard'
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { PreventUnsavedChangesGuard} from './_guards/prevent-unsaved-changes.guard'
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
@@ -17,6 +19,7 @@ const routes: Routes = [
     children: [
       { path: 'members', component: MemberListComponent},
       { path: 'members/:username', component: MemberDetailComponent },
+      { path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard] },//if members/edit to avoid confilg with be4 we use pathMatch:full and move it up
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent }
 
