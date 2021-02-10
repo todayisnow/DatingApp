@@ -13,8 +13,7 @@ export class MemberCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    if (this.member.photoUrl!=null)
-    this.member.photoUrl += "?"+Math.random();
+   
   }
 
 }

@@ -25,6 +25,12 @@ export class MembersService {
     return this.http.get<Member[]>(this.baseUrl + 'users').pipe(
       map(members => {
         this.members = members;
+        for (var m of this.members) {
+          m.photoUrl += '?' + Math.random();
+          for (var item of m.photos) {
+            item.url += "?" + Math.random();
+          }
+        }
         return members;
       })
       );
@@ -32,7 +38,15 @@ export class MembersService {
   getMember(username: string) {
     const member = this.members.find(x => x.username === username);
     if (member !== undefined) return of(member);
-    return this.http.get<Member>(this.baseUrl + 'users/' + username);
+    return this.http.get<Member>(this.baseUrl + 'users/' + username).pipe(
+      map((m:Member) => {
+        m.photoUrl += '?'+Math.random();
+        for (var item of m.photos) {
+          item.url += "?"+Math.random();
+        }
+        return m;
+      })
+    );
   }
   updateMember(member: Member) {
 

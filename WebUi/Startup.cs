@@ -28,17 +28,17 @@ namespace WebUi
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            config = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration config { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
-            services.AddApplicationServices(Configuration);
-            services.AddIdentityServices(Configuration);
+            
+            services.AddApplicationServices(config);
+            services.AddIdentityServices(config);
 
             services.AddControllers();
             services.AddCors();
