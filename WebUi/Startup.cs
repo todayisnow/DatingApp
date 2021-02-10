@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using WebUi.Data;
 using WebUi.Extensions;
+using WebUi.Helpers;
 using WebUi.Interfaces;
 using WebUi.Middleware;
 using WebUi.Services;
@@ -35,6 +36,7 @@ namespace WebUi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
 
