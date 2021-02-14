@@ -50,7 +50,7 @@ namespace WebUi.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+            var user = await _context.Users.Include(x=>x.Photos).SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
             if (user != null)
             {
                 using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -58,7 +58,8 @@ namespace WebUi.Controllers
                 return !ch.SequenceEqual(user.PasswordHash) ? Unauthorized("Invalid Password") :  new UserDto
                 {
                     Username = loginDto.Username.ToLower(),
-                    Token = _tokenService.CreateToken(user)
+                    Token = _tokenService.CreateToken(user),
+                    PhotoUrl=user.Photos.FirstOrDefault(m=>m.IsMain)?.Url
                 }; 
             }
 

@@ -92,6 +92,42 @@ namespace WebUi.Controllers
             return BadRequest("Can not upload");
 
         }
+        [HttpPut("set-main-photo/{photoId}")]
+        public async Task<ActionResult> SetMainPhoto(int photoId)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var photo = user.Photos.FirstOrDefault(m => m.Id == photoId);
+            if (photo.IsMain) return BadRequest("This is Main Photo");
+            var currentMain = user.Photos.FirstOrDefault(m => m.IsMain);
+            if(currentMain!=null)
+            {
+                currentMain.IsMain = false;
+            }
+            photo.IsMain = true;
+            if (await _userRepository.SaveAllAsync()) return NoContent();
+            return BadRequest("Faild to set main photo");
+
+        }
+        [HttpDelete("delete-photo/{photoId}")]
+        public async Task<ActionResult> DeletePhoto(int photoId)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var photo = user.Photos.FirstOrDefault(m => m.Id == photoId);
+            if (photo == null)
+                return NotFound();
+            if (photo.IsMain)
+                return BadRequest("Cant Delete main photo");
+            if(photo.PublicId!=null)//delete from cloudianry
+            {
+                var result =await _photoService.DeletePhotoAsync(photo.PublicId);
+                if (result.Error != null)
+                    return BadRequest(result.Error.Message);
+            }
+            user.Photos.Remove(photo);
+            if (await _userRepository.SaveAllAsync()) return Ok();
+            return BadRequest("Faild to delete");
+
+        }
 
 
     }

@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { Member } from '../_models/member';
 import { of } from "rxjs";
 import { map } from "rxjs/internal/operators/map";
+import { release } from 'process';
 
 
 // interceptor used instead 
@@ -26,6 +27,7 @@ export class MembersService {
       map(members => {
         this.members = members;
         for (var m of this.members) {
+          if (m.photoUrl!=null)
           m.photoUrl += '?' + Math.random();
           for (var item of m.photos) {
             item.url += "?" + Math.random();
@@ -39,7 +41,8 @@ export class MembersService {
     const member = this.members.find(x => x.username === username);
     if (member !== undefined) return of(member);
     return this.http.get<Member>(this.baseUrl + 'users/' + username).pipe(
-      map((m:Member) => {
+      map((m: Member) => {
+        if (m.photoUrl != null)
         m.photoUrl += '?'+Math.random();
         for (var item of m.photos) {
           item.url += "?"+Math.random();
@@ -47,6 +50,12 @@ export class MembersService {
         return m;
       })
     );
+  }
+  setMainPhoto(photoId: number) {
+    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {})
+  }
+  deletePhoto(photoId: number) {
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
   updateMember(member: Member) {
 

@@ -11,5 +11,6 @@ namespace WebUi.Dto
       
 
         public string Token { get; set; }
+        public string PhotoUrl { get; set; }
     }
 }
