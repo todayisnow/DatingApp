@@ -1,4 +1,4 @@
-<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="false">
+<!--<form #registerForm="ngForm"  (ngSubmit)="register()" autocomplete="false">
 
   <h2 class="text-center text-primary">Sign up</h2>
   <hr />
@@ -15,7 +15,39 @@
     <button class="btn btn-success mr-2" type="submit">Register</button>
     <button class="btn btn-info mr-2" type="button" (click)="cancel()">Cancel</button>
   </div>
+</form>-->
+<form [formGroup]='registerForm' (ngSubmit)="register()" autocomplete="false">
+
+  <h2 class="text-center text-primary">Sign up</h2>
+  <hr />
+  <div class="form-group">
+    <input type="text"  class="form-control"
+           formControlName="username" placeholder="Username"
+           [class.is-invalid]="registerForm.get('username').errors && registerForm.get('username').touched"
+           />
+    <div class="invalid-feedback">Please enter username</div>
+  </div>
+  <div class="form-group">
+    <input type="password" class="form-control"
+           [class.is-invalid]="registerForm.get('password').errors && registerForm.get('password').touched"
+           formControlName="password" placeholder="Password" />
+    <div class="invalid-feedback">{{registerForm.get('password').errors}}</div>
+
+  </div>
+  <div class="form-group">
+    <input type="password" class="form-control"
+           [class.is-invalid]="registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword').touched"
+           formControlName="confirmPassword" placeholder="Confirm Password" />
+    <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword').hasError('isMatching')">Not Matching</div>
+
+  </div>
+  <div class="form-group text-center">
+    <button class="btn btn-success mr-2" type="submit">Register</button>
+    <button class="btn btn-info mr-2" type="button" (click)="cancel()">Cancel</button>
+  </div>
 </form>
+<p>{{registerForm.value | json}}</p>
+<p>{{registerForm.status | json}}</p>
 <div class="row mt-5" *ngIf="validationErrors.length > 0">
   <ul class="text-danger">
     <li *ngFor="let error of validationErrors">

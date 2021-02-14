@@ -13,14 +13,14 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./member-edit.component.css']
 })
 export class MemberEditComponent implements OnInit {
-  @ViewChild('editForm') editForm: NgForm;
+  @ViewChild('editForm') editForm: NgForm;//to access form through template ref variable
   member: Member;
   user: User;
   @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any) {
     if (this.editForm.dirty) {
       $event.returnValue = true;
     }
-  }
+  }// alert when closing browser if data changes
 
   constructor(private accountService: AccountService, private memberService: MembersService,
     private toastr: ToastrService) {

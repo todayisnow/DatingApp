@@ -105,7 +105,7 @@ namespace WebUi.Controllers
             }
             photo.IsMain = true;
             if (await _userRepository.SaveAllAsync()) return NoContent();
-            return BadRequest("Faild to set main photo");
+            return BadRequest("Failed to set main photo");
 
         }
         [HttpDelete("delete-photo/{photoId}")]
@@ -117,7 +117,7 @@ namespace WebUi.Controllers
                 return NotFound();
             if (photo.IsMain)
                 return BadRequest("Cant Delete main photo");
-            if(photo.PublicId!=null)//delete from cloudianry
+            if(photo.PublicId!=null)//delete from cloudinary
             {
                 var result =await _photoService.DeletePhotoAsync(photo.PublicId);
                 if (result.Error != null)
@@ -125,7 +125,7 @@ namespace WebUi.Controllers
             }
             user.Photos.Remove(photo);
             if (await _userRepository.SaveAllAsync()) return Ok();
-            return BadRequest("Faild to delete");
+            return BadRequest("Failed to delete");
 
         }
 
