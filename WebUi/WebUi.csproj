@@ -33,6 +33,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\_forms\" />
     <Folder Include="ClientApp\src\app\_guards\" />
   </ItemGroup>
 
