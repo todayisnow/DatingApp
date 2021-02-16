@@ -11,6 +11,7 @@ using WebUi.Interfaces;
 //using AutoMapper;
 //using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using WebUi.Helpers;
 
 namespace WebUi.Data
 {
@@ -32,12 +33,12 @@ namespace WebUi.Data
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-            //var query = _context.Users.AsQueryable();
-
+            //return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+            //    .ToListAsync();
+            var query = _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).AsNoTracking();
+            return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
             //query = query.Where(u => u.UserName != userParams.CurrentUsername);
             //query = query.Where(u => u.Gender == userParams.Gender);
 
