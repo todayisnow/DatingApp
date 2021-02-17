@@ -8,7 +8,9 @@ import { PaginatedResult } from '../_models/Pagination';
 import { HttpParams } from "@angular/common/http";
 import { UserParams} from '../_models/userParams'
 import { HttpResponse } from "@angular/common/http";
-
+import { AccountService } from "./account.service";
+import { User } from "../_models/user";
+import { take } from "rxjs/operators";
 // interceptor used instead 
 //const httpOptions = {
 //  headers: new HttpHeaders({
@@ -21,10 +23,36 @@ import { HttpResponse } from "@angular/common/http";
 })
 export class MembersService {
   baseUrl = environment.apiUrl;
-  members: Member[] = [];
-  constructor(private http: HttpClient) { }
+  memberCache= new Map();
+  userParams: UserParams;
+  user: User;
+
+  constructor(private http: HttpClient, private accountService:AccountService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe((user: User) => {
+      this.user = user;
+      this.userParams = new UserParams(user);
+    });
+  }
+
+  getUserParams() {
+    return this.userParams;
+  }
+  resetUserParams() {
+    this.userParams = new UserParams(this.user);
+    return this.userParams;
+  }
+  private setUserParams(userParams: UserParams) {
+    this.userParams = userParams;
+  }
+
   getMembers(userParams: UserParams) {
-    
+    this.setUserParams(userParams);
+    let currentKey = Object.values(userParams).join('-');
+    var resposne = this.memberCache.get(currentKey);
+    if (resposne) return of(resposne);//caching as observable "of"
+
+
+
     let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
 
@@ -33,35 +61,48 @@ export class MembersService {
     params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
 
-    return this.getPaginatedResult<Member[]>(this.baseUrl+'users',params);
+    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params).pipe(
+      map(members => {
+        this.memberCache.set(currentKey, members);
+        return members;
+      })
+      );
+  }
 
 
-    //only get method gets the body but observe will get the whole response then we get out the body
+ 
+  getMember(username: string) {
 
-    // if (this.members.length > 0) return of(this.members);//caching as observable "of"
-    //return this.http.get<Member[]>(this.baseUrl + 'users').pipe(
-    //  map(members => {
-    //   // this.members = members;
-    //    for (var m of members) {
-    //      if (m.photoUrl!=null)
-    //      m.photoUrl += '?' + Math.random();
-    //      for (var item of m.photos) {
-    //        item.url += "?" + Math.random();
-    //      }
-    //    }
-    //    return members;
-    //  })
-    //  );
+    
+    const member = [...this.memberCache.values()]//spread operator
+      .reduce((arr, elem) => arr.concat(elem.result), [])//call back for all the elems 
+      .find((member: Member) => member.username === username);
+
+    if (member) return of(member);
+   return this.http.get<Member>(this.baseUrl + 'users/' + username);
+  }
+
+  setMainPhoto(photoId: number) {
+    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {})
+  }
+
+  deletePhoto(photoId: number) {
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
+  }
+
+  updateMember(member: IMember1) {
+
+    return this.http.put(this.baseUrl + 'users', member);
   }
 
 
   private getPaginatedResult<T>(url, params: HttpParams) {
     const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
-    
+
     return this.http.get<T>(url, { observe: 'response', params }).pipe(
       map((response: HttpResponse<T>) => {
-        
-       paginatedResult.result = response.body;
+
+        paginatedResult.result = response.body;
         if (response.headers.get('Pagination') != null) {
           paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
         }
@@ -76,34 +117,5 @@ export class MembersService {
     return params;
 
 
-  }
-  getMember(username: string) {
-    const member = this.members.find(x => x.username === username);
-    if (member !== undefined) return of(member);
-    return this.http.get<Member>(this.baseUrl + 'users/' + username).pipe(
-      map((m: Member) => {
-        if (m.photoUrl != null)
-        m.photoUrl += '?'+Math.random();
-        for (var item of m.photos) {
-          item.url += "?"+Math.random();
-        }
-        return m;
-      })
-    );
-  }
-  setMainPhoto(photoId: number) {
-    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {})
-  }
-  deletePhoto(photoId: number) {
-    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
-  }
-  updateMember(member: IMember1) {
-
-    return this.http.put(this.baseUrl + 'users', member).pipe(
-      map(() => {
-        const index = this.members.indexOf(member);
-        this.members[index] = member;
-      })
-    );
   }
 }
