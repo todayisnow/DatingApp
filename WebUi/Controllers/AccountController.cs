@@ -47,7 +47,8 @@ namespace WebUi.Controllers
             {
                 Username = registerDto.Username.ToLower(),
                 Token = _tokenService.CreateToken(user),
-                KnownAs = user.KnownAs
+                KnownAs = user.KnownAs,
+                Gender = user.Gender
             };
         }
         [HttpPost("login")]
@@ -63,7 +64,9 @@ namespace WebUi.Controllers
                     Username = loginDto.Username.ToLower(),
                     Token = _tokenService.CreateToken(user),
                     PhotoUrl = user.Photos.FirstOrDefault(m => m.IsMain)?.Url,
-                    KnownAs = user.KnownAs
+                    KnownAs = user.KnownAs,
+                    Gender = user.Gender
+
 
 
                 };
