@@ -3,6 +3,24 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ClientApp\dist\**" />
+    <Compile Remove="ClientApp\node_modules\**" />
+    <Compile Remove="ClientApp\out-tsc\**" />
+    <Content Remove="ClientApp\dist\**" />
+    <Content Remove="ClientApp\node_modules\**" />
+    <Content Remove="ClientApp\out-tsc\**" />
+    <EmbeddedResource Remove="ClientApp\dist\**" />
+    <EmbeddedResource Remove="ClientApp\node_modules\**" />
+    <EmbeddedResource Remove="ClientApp\out-tsc\**" />
+    <None Remove="ClientApp\dist\**" />
+    <None Remove="ClientApp\node_modules\**" />
+    <None Remove="ClientApp\out-tsc\**" />
+    <TypeScriptCompile Remove="ClientApp\dist\**" />
+    <TypeScriptCompile Remove="ClientApp\node_modules\**" />
+    <TypeScriptCompile Remove="ClientApp\out-tsc\**" />
+  </ItemGroup>
   
   <ItemGroup>
     

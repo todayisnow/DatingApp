@@ -32,7 +32,9 @@ export class MemberListComponent implements OnInit {
     this.loadMembers();
   
   }
-  loadMembers() {
+  loadMembers(resetPage?: boolean) {
+    if (resetPage != null && resetPage != undefined && resetPage)
+      this.userParams.pageNumber = 1;
     this.memberService.getMembers(this.userParams).subscribe((response: PaginatedResult<Member[]>) => {
       this.members = response.result;
       this.pagination = response.pagination;

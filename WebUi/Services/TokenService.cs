@@ -17,17 +17,18 @@ namespace WebUi.Services
         private readonly SymmetricSecurityKey _key;
         public TokenService(IConfiguration config)
         {
-           _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["tokenKey"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["tokenKey"]));
         }
 
-        
+
 
         public string CreateToken(AppUser user) =>
              new JwtSecurityTokenHandler().WriteToken(new JwtSecurityTokenHandler().CreateToken(new SecurityTokenDescriptor
              {
                  Subject = new ClaimsIdentity(new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId,user.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId,user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName,user.UserName)
 
             }),
                  Expires = DateTime.Now.AddDays(7),
@@ -51,8 +52,8 @@ namespace WebUi.Services
         //var tokenHandler = new JwtSecurityTokenHandler();
         //var token = tokenHandler.CreateToken(tokenDesc);
         //    return tokenHandler.WriteToken(token);
-      
 
-        
+
+
     }
 }
