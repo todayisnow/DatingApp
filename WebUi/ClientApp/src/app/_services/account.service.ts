@@ -8,6 +8,7 @@ import { ReplaySubject } from "rxjs";
 
 import { environment } from "src/environments/environment";
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -46,7 +47,6 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
-
   }
 }
 

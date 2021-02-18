@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { MembersService } from '../../_services/members.service'
 import { Member } from "../../_models/member";
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from '@kolkov/ngx-gallery';
+import { ToastrService } from "ngx-toastr";
 
 
 @Component({
@@ -14,7 +15,8 @@ export class MemberDetailComponent implements OnInit {
   member: Member;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
-  constructor(private memberService:MembersService , private route:ActivatedRoute) { }
+  constructor(private memberService: MembersService, private route: ActivatedRoute,
+  private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.loadMember();
@@ -34,6 +36,13 @@ export class MemberDetailComponent implements OnInit {
 
     
   }
+
+  addLike(member: Member) {
+    this.memberService.addLike(member.username).subscribe(() => {
+      this.toastr.success('You have liked ' + member.knownAs);
+    });
+  }
+
   getImages(): NgxGalleryImage[] {
     const imageUrls = [];
     for (const photo of this.member.photos) {

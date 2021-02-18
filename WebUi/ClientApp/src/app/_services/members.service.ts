@@ -41,6 +41,10 @@ export class MembersService {
     this.userParams = new UserParams(this.user);
     return this.userParams;
   }
+  resetMemberCache() {
+    this.memberCache = new Map();
+    
+  }
   private setUserParams(userParams: UserParams) {
     this.userParams = userParams;
   }
@@ -96,13 +100,13 @@ export class MembersService {
   }
 
   addLike(username: string) {
-    return this.http.post(this.baseUrl + 'likes/' + username, {})
+    return this.http.post(this.baseUrl + 'likes/' + username, {});
   }
 
   getLikes(predicate: string, pageNumber, pageSize) {
     let params = this.getPaginationHeaders(pageNumber, pageSize);
     params = params.append('predicate', predicate);
-    return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
+    return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params);
   }
 
   private getPaginatedResult<T>(url, params: HttpParams) {
