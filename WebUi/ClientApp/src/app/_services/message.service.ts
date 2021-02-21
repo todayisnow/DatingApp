@@ -36,7 +36,8 @@ export class MessageService {
     return this.http.get<Message[]>(this.baseUrl + 'messages/thread/' + username);
   }
 
-  async sendMessage(username: string, content: string) {
+    sendMessage(username: string, content: string) {
+    return this.http.post<Message>(this.baseUrl + 'messages', { recipientUsername: username, content });//content not content:content becase they are the same 
     //return this.hubConnection.invoke('SendMessage', { recipientUsername: username, content })
     //  .catch(error => console.log(error));
   }
@@ -47,26 +48,4 @@ export class MessageService {
 
 
 
-  private getPaginatedResult<T>(url, params: HttpParams) {
-    const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
-
-    return this.http.get<T>(url, { observe: 'response', params }).pipe(
-      map((response: HttpResponse<T>) => {
-
-        paginatedResult.result = response.body;
-        if (response.headers.get('Pagination') != null) {
-          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
-        }
-        return paginatedResult;
-      }));
-  }
-  private getPaginationHeaders(pageNumber: number, pageSize: number) {
-    let params = new HttpParams();//serialize parameters and adding to query string
-
-    params = params.append('pageNumber', pageNumber.toString());
-    params = params.append('pageSize', pageSize.toString());
-    return params;
-
-
-  }
 }

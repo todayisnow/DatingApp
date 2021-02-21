@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
       });
     this.registerForm.controls.password.valueChanges.subscribe(() => {
       this.registerForm.controls.confirmPassword.updateValueAndValidity();
-      console.log(this.registerForm.get('password').errors);
+      
       }
     );
   }

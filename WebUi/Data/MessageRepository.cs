@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -97,7 +98,7 @@ namespace WebUi.Data
                         && m.Sender.UserName == currentUsername && m.SenderDeleted == false
                 )
                 .OrderBy(m => m.MessageSent)
-                .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
+               
                 .ToListAsync();
 
             var unreadMessages = messages.Where(m => m.DateRead == null 
@@ -112,8 +113,8 @@ namespace WebUi.Data
 
                 await _context.SaveChangesAsync();
             }
-
-            return messages;
+            // .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
+            return _mapper.Map<IEnumerable<MessageDto>>(messages);
         }
 
         //public void RemoveConnection(Connection connection)
