@@ -19,7 +19,7 @@ export class MemberListComponent implements OnInit {
   pagination: Pagination;
   userParams: UserParams;
   genderList = [{ value: 'male', display: "Males" }, { value: 'female', display: "Females" }]
-  f=false;
+
   constructor(private memberService: MembersService) {
     this.userParams = memberService.getUserParams();
     
@@ -33,12 +33,12 @@ export class MemberListComponent implements OnInit {
     if (resetPage != null && resetPage != undefined && resetPage) {
       this.userParams.pageNumber = 1;
     }
-    this.f = true;
+    
     this.memberService.getMembers(this.userParams).subscribe((response: PaginatedResult<Member[]>) => {
       this.members = response.result;
       this.pagination = response.pagination;
-      this.f = false
-    }
+     
+        }
     );
   }
   pageChanged(event: any): void {

@@ -54,7 +54,7 @@
   </table>
 </div>
 
-<div class="d-flex justify-content-center" *ngIf="pagination && pagination.totalItems >pagination.itemsPerPage && f==2">
+<div class="d-flex justify-content-center" *ngIf="pagination && pagination.totalItems >pagination.itemsPerPage  "> <!--&& !loading-->
   <pagination [boundaryLinks]="true"
               [totalItems]="pagination.totalItems"
               [itemsPerPage]="pagination.itemsPerPage"
