@@ -3,7 +3,7 @@
 </div>
 
 <div class="container mt-3">
-  <div class="row">
+  <div class="row justify-content-center">
     <div class="btn-group" name="predicate">
       <button class="btn btn-primary" btnRadio="liked"
               [(ngModel)]="predicate" (click)="loadLikes()">
@@ -16,14 +16,14 @@
     </div>
   </div>
 
-  <div class="row mt-3">
+  <div class="row mt-3 justify-content-center">
     <div class="col-2" *ngFor="let member of members">
       <app-member-card [member]="member"></app-member-card>
     </div>
   </div>
 </div>
 
-<div class="d-flex justify-content-center" *ngIf="pagination">
+<div class="d-flex justify-content-center" *ngIf="pagination && pagination.totalItems >pagination.itemsPerPage">
   <pagination [boundaryLinks]="true"
               [totalItems]="pagination.totalItems"
               [itemsPerPage]="pagination.itemsPerPage"

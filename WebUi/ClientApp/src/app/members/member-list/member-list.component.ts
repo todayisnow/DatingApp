@@ -37,7 +37,7 @@ export class MemberListComponent implements OnInit {
     this.memberService.getMembers(this.userParams).subscribe((response: PaginatedResult<Member[]>) => {
       this.members = response.result;
       this.pagination = response.pagination;
-     
+     console.log(this.pagination);
         }
     );
   }
@@ -51,7 +51,7 @@ export class MemberListComponent implements OnInit {
 
     this.userParams = this.memberService.resetUserParams();
     
-    this.loadMembers();
+    this.loadMembers(true);
   }
 
 }

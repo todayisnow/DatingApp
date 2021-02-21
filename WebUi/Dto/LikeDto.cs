@@ -1,4 +1,4 @@
-namespace WebUi.DTOs
+namespace WebUi.Dto
 {
     public class LikeDto
     {

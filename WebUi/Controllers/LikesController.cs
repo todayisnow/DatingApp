@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebUi.DTOs;
+using WebUi.Dto;
 using WebUi.Entities;
 using WebUi.Extensions;
 using WebUi.Helpers;
