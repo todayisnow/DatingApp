@@ -1,13 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Member, Member as IMember, Member as IMember1 } from '../_models/member';
+import { Member} from '../_models/member';
 import { of } from "rxjs";
 import { map } from "rxjs/operators";
-import { PaginatedResult } from '../_models/Pagination';
-import { HttpParams } from "@angular/common/http";
 import { UserParams} from '../_models/userParams'
-import { HttpResponse } from "@angular/common/http";
 import { AccountService } from "./account.service";
 import { User } from "../_models/user";
 import { take } from "rxjs/operators";
@@ -28,7 +25,7 @@ export class MembersService {
   userParams: UserParams;
   user: User;
 
-  constructor(private http: HttpClient, private accountService:AccountService) {
+  constructor(private http: HttpClient, private accountService: AccountService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe((user: User) => {
       this.user = user;
       this.userParams = new UserParams(user);
@@ -52,8 +49,8 @@ export class MembersService {
 
   getMembers(userParams: UserParams) {
     this.setUserParams(userParams);
-    let currentKey = Object.values(userParams).join('-');
-    var resposne = this.memberCache.get(currentKey);
+    const currentKey = Object.values(userParams).join('-');
+    const resposne = this.memberCache.get(currentKey);
     if (resposne) return of(resposne);//caching as observable "of"
 
 
@@ -95,7 +92,7 @@ export class MembersService {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
 
-  updateMember(member: IMember1) {
+  updateMember(member: Member) {
 
     return this.http.put(this.baseUrl + 'users', member);
   }

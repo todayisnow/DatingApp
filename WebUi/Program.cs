@@ -15,7 +15,7 @@ using WebUi.Entities;
 namespace WebUi
 {
     public class Program
-    {
+    { 
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
@@ -25,8 +25,9 @@ namespace WebUi
             {
                 var context = services.GetRequiredService<DataContext>();
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await context.Database.MigrateAsync();
-                await Seed.SeedUsers(userManager);
+                await Seed.SeedUsers(userManager,roleManager);
             }
             catch (Exception ex)
             {

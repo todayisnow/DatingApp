@@ -38,7 +38,7 @@ namespace WebUi.Controllers
         }
 
         [HttpGet]
-
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
@@ -57,7 +57,7 @@ namespace WebUi.Controllers
 
 
         [HttpGet("{username}",Name = "GetUser")]
-
+        [Authorize(Roles ="Member")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
             

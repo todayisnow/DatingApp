@@ -29,16 +29,13 @@ export class MessagesComponent implements OnInit {
    
 this.loading = true;
     this.messageService.getMessages(this.pageNumber, this.pageSize, this.container)
-      .pipe(finalize(() => { console.log(1); }))
+      //.pipe(finalize(() => { console.log(1); }))
       .subscribe(response => {
 
         this.messages = response.result;
         this.pagination = response.pagination;
         this.loading = false;
-        console.log(3);
-
-      }, e => { console.log(4);},
-        () => { console.log(2);});
+      });
 
   }
 

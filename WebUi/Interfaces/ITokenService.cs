@@ -8,7 +8,7 @@ namespace WebUi.Interfaces
 {
    public interface ITokenService
     {
-        string CreateToken(AppUser User);
+       Task< string> CreateToken(AppUser User);
 
     }
 }

@@ -38,6 +38,10 @@ export class ErrorInterceptor implements HttpInterceptor {
             case 401:
               this.toastr.error(error.error, error.status);
               break;
+            case 403:
+              
+              this.toastr.error("Access Denied", error.status);
+              break;
             case 404:
               this.router.navigateByUrl('/not-found');
               break;
