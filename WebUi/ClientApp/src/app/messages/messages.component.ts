@@ -3,7 +3,7 @@ import { Message } from '../_models/message';
 import { Pagination } from '../_models/pagination';
 
 import { MessageService } from '../_services/message.service';
-
+import { finalize} from "rxjs/operators"
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
@@ -15,25 +15,30 @@ export class MessagesComponent implements OnInit {
   container = 'Inbox';
   pageNumber = 1;
   pageSize = 5;
-  loadin= false;
+  loading= false;
 
   constructor(private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.loadMessages();
-  console.log(11);
+
   }
 
-  loadMessages(t?:number) {
+  loadMessages() {
     
-    this.loadin = true;
+   
+this.loading = true;
+    this.messageService.getMessages(this.pageNumber, this.pageSize, this.container)
+      .pipe(finalize(() => { console.log(1); }))
+      .subscribe(response => {
 
-    this.messageService.getMessages(this.pageNumber, this.pageSize, this.container).subscribe(response => {
-      this.messages = response.result;
-      this.pagination = response.pagination;
-     
-      this.loadin = false;
-    });
+        this.messages = response.result;
+        this.pagination = response.pagination;
+        this.loading = false;
+        console.log(3);
+
+      }, e => { console.log(4);},
+        () => { console.log(2);});
 
   }
 
@@ -52,9 +57,10 @@ export class MessagesComponent implements OnInit {
   }
 
   pageChanged(event: any) {
-    
+   
     this.pageNumber = event.page;
     this.loadMessages();
+    ;
   }
 
 }

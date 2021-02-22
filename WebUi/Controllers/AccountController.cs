@@ -34,12 +34,11 @@ namespace WebUi.Controllers
         {
             if (await UserExits(registerDto.Username)) return BadRequest("Username is taken!");
             var user = _mapper.Map<AppUser>(registerDto);
-            using var hmac = new HMACSHA512();
 
 
 
-            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
-            user.PasswordSalt = hmac.Key;
+
+
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
@@ -57,18 +56,13 @@ namespace WebUi.Controllers
             var user = await _context.Users.Include(x => x.Photos).SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
             if (user != null)
             {
-                using var hmac = new HMACSHA512(user.PasswordSalt);
-                var ch = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-                return !ch.SequenceEqual(user.PasswordHash) ? Unauthorized("Invalid Password") : new UserDto
+                return new UserDto
                 {
                     Username = loginDto.Username.ToLower(),
                     Token = _tokenService.CreateToken(user),
                     PhotoUrl = user.Photos.FirstOrDefault(m => m.IsMain)?.Url,
                     KnownAs = user.KnownAs,
                     Gender = user.Gender
-
-
-
                 };
             }
 
