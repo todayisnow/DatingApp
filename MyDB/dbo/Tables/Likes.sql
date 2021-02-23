@@ -2,9 +2,11 @@
     [SourceUserId] INT NOT NULL,
     [LikedUserId]  INT NOT NULL,
     CONSTRAINT [PK_Likes] PRIMARY KEY CLUSTERED ([SourceUserId] ASC, [LikedUserId] ASC),
-    CONSTRAINT [FK_Likes_Users_LikedUserId] FOREIGN KEY ([LikedUserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_Likes_Users_SourceUserId] FOREIGN KEY ([SourceUserId]) REFERENCES [dbo].[Users] ([Id])
+    CONSTRAINT [FK_Likes_AspNetUsers_LikedUserId] FOREIGN KEY ([LikedUserId]) REFERENCES [dbo].[AspNetUsers] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Likes_AspNetUsers_SourceUserId] FOREIGN KEY ([SourceUserId]) REFERENCES [dbo].[AspNetUsers] ([Id])
 );
+
+
 
 
 GO

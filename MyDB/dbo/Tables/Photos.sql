@@ -5,8 +5,10 @@
     [IsMain]    BIT            NOT NULL,
     [PublicId]  NVARCHAR (MAX) NULL,
     CONSTRAINT [PK_Photos] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Photos_Users_AppUserId] FOREIGN KEY ([AppUserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_Photos_AspNetUsers_AppUserId] FOREIGN KEY ([AppUserId]) REFERENCES [dbo].[AspNetUsers] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 GO

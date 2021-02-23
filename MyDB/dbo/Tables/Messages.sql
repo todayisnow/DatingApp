@@ -10,9 +10,11 @@
     [SenderDeleted]     BIT            NOT NULL,
     [RecipientDeleted]  BIT            NOT NULL,
     CONSTRAINT [PK_Messages] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Messages_Users_RecipientId] FOREIGN KEY ([RecipientId]) REFERENCES [dbo].[Users] ([Id]),
-    CONSTRAINT [FK_Messages_Users_SenderId] FOREIGN KEY ([SenderId]) REFERENCES [dbo].[Users] ([Id])
+    CONSTRAINT [FK_Messages_AspNetUsers_RecipientId] FOREIGN KEY ([RecipientId]) REFERENCES [dbo].[AspNetUsers] ([Id]),
+    CONSTRAINT [FK_Messages_AspNetUsers_SenderId] FOREIGN KEY ([SenderId]) REFERENCES [dbo].[AspNetUsers] ([Id])
 );
+
+
 
 
 GO
