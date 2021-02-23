@@ -28,6 +28,8 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { HasRoleDirective } from './_directives/has-role.directive';
+import { RolesModalComponent } from './model/roles-modal/roles-modal.component';
 
 
 
@@ -54,7 +56,9 @@ import { UserManagementComponent } from './admin/user-management/user-management
     MemberMessagesComponent,
     AdminPanelComponent,
     PhotoManagementComponent,
-    UserManagementComponent
+    UserManagementComponent,
+    HasRoleDirective,
+    RolesModalComponent
   ],
   imports: [
     BrowserModule,
@@ -71,5 +75,6 @@ import { UserManagementComponent } from './admin/user-management/user-management
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
     ],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule { }
