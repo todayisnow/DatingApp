@@ -10,7 +10,8 @@ import { AuthGuard } from './_guards/auth.guard'
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
-import { MemberDetailedResolver} from './_resolvers/member-detailed.resolver'
+import { MemberDetailedResolver } from './_resolvers/member-detailed.resolver';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
       { path: 'members/:username', component: MemberDetailComponent, resolve: {member:MemberDetailedResolver}},
       { path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard] },//if members/edit to avoid confilg with be4 we use pathMatch:full and move it up
       { path: 'lists', component: ListsComponent },
-      { path: 'messages', component: MessagesComponent }
+      { path: 'messages', component: MessagesComponent },
+      { path: 'admin', component: AdminPanelComponent }
 
     ]
   },

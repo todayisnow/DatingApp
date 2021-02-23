@@ -7,6 +7,7 @@ using WebUi.Entities;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace WebUi.Data
 {
@@ -17,6 +18,16 @@ namespace WebUi.Data
             if (await userManager.Users.AnyAsync()) return;
 
             var userData = await File.ReadAllTextAsync("Data/UserSeedData.json");
+            for (int i = 0; i < 100; i++)
+            {
+                var regex = new Regex(Regex.Escape("xv"));
+                 userData = regex.Replace(userData, i.ToString(), 1);
+            }
+            for (int i = 0; i < 100; i++)
+            {
+                var regex = new Regex(Regex.Escape("xt"));
+                userData = regex.Replace(userData, i.ToString(), 1);
+            }
             var users = JsonSerializer.Deserialize<List<AppUser>>(userData);
             if (users == null) return;
 
