@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebUi.Dto;
+using WebUi.Extensions;
+using WebUi.Helpers;
 
 namespace WebUi.Controllers
 {
@@ -18,21 +21,22 @@ namespace WebUi.Controllers
 
         [Authorize(Policy = "RequireAdminRole")]
         [HttpGet("users-with-roles")]
-        public async Task<ActionResult> GetUsersWithRoles()
+        public async Task<ActionResult> GetUsersWithRoles([FromQuery]PaginationParams paginationParams)
         {
-            var users = await _userManager.Users
+            var users =  _userManager.Users
                 .Include(r => r.UserRoles)
                 .ThenInclude(r => r.Role)
                 .OrderBy(u => u.UserName)
-                .Select(u => new
+                .Select(u => new UserRolesDto
                 {
-                    u.Id,
+                    Id = u.Id,
                     Username = u.UserName,
-                    Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
-                })
-                .ToListAsync();
-
-            return Ok(users);
+                    Roles  = u.UserRoles.Select(r => r.Role.Name).ToList()
+                });
+            var usersRoles = await PagedList<UserRolesDto>.CreateAsync(users, paginationParams.PageNumber,
+                paginationParams.PageSize);
+            Response.AddPaginationHeader(usersRoles.CurrentPage, usersRoles.PageSize, usersRoles.TotalCount, usersRoles.TotalPages);
+            return Ok(usersRoles);
         }
 
         [Authorize(Policy = "RequireAdminRole")]
