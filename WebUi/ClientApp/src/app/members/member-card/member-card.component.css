@@ -41,11 +41,11 @@
   }
 
   100% {
-    opacity: 0.4;
+    opacity: 0.3;
   }
 }
 
 .is-online {
-  animation: fa-blink 1.5s linear infinite;
-  color: rgb(1, 189, 42);
+  animation: fa-blink 1s linear infinite;
+  color: rgb(2, 122, 7);
 }
