@@ -7,6 +7,7 @@ import { ReplaySubject } from "rxjs";
 
 
 import { environment } from "src/environments/environment";
+import { PresenceService } from "./presence.service";
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class AccountService {
   baseUrl = environment.apiUrl;
   private currentUserSource = new ReplaySubject<User>(1); //It buffers a set number of values and will emit those values immediately to any new subscribers in addition to emitting new values to existing subscribers.
   currentUser$ = this.currentUserSource.asObservable();//create observable to subscribe to
-  constructor(private http:HttpClient) {
+  constructor(private http: HttpClient, private presence: PresenceService) {
 
   }
   login(model: any) {
@@ -25,6 +26,7 @@ export class AccountService {
         const user = response;
         if (user) {
           this.setCurrentUser(user);
+          this.presence.createHubConnection(user);
           
         }
       })
@@ -35,6 +37,7 @@ export class AccountService {
       map((user: User) => {
         if (user) {
           this.setCurrentUser(user);
+          this.presence.createHubConnection(user);
         }
       })
     );
@@ -54,6 +57,7 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+    this.presence.stopHubConnection();
   }
   getDecodedToken(token:string) {
     return JSON.parse(atob(token.split('.')[1]));

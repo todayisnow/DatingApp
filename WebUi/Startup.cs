@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
 using WebUi.Data;
 using WebUi.Extensions;
@@ -21,6 +22,7 @@ using WebUi.Helpers;
 using WebUi.Interfaces;
 using WebUi.Middleware;
 using WebUi.Services;
+using WebUi.SignalR;
 
 namespace WebUi
 {
@@ -42,7 +44,10 @@ namespace WebUi
 
             services.AddControllers();
             services.AddCors();
-
+            services.AddSignalR(opt =>
+            {
+                opt.EnableDetailedErrors = true;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebUi", Version = "v1" });
@@ -64,13 +69,17 @@ namespace WebUi
 
             app.UseRouting();
 
-            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            app.UseCors(policy => policy.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .WithOrigins("https://localhost:4200"));
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PresenceHub>("hubs/presence");
             });
         }
     }
