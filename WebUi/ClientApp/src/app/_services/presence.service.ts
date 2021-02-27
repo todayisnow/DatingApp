@@ -9,8 +9,8 @@ import { User } from '../_models/user';
   providedIn: 'root'
 })
 export class PresenceService {
-  hubUrl = environment.hubUrl
-  private hubConnection: HubConnection
+  hubUrl = environment.hubUrl;
+  private hubConnection: HubConnection;
 
   private onlineUsersSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUsersSource.asObservable();
@@ -26,7 +26,7 @@ export class PresenceService {
       .build();
     
 
-    this.hubConnection.start().catch(error => { console.log(2); console.error(error) });
+    this.hubConnection.start().catch(error => {  console.error(error) });
   
     this.hubConnection.on('UserIsOnline', username => {
       this.toastr.info(username + " has connected");
@@ -37,6 +37,7 @@ export class PresenceService {
     });
     
     this.hubConnection.on('GetOnlineUsers', (usernames: string[]) => {
+      console.log(usernames);
       this.onlineUsersSource.next(usernames);
     });
   }

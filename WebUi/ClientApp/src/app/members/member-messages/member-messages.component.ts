@@ -12,7 +12,7 @@ import { MessageService } from 'src/app/_services/message.service';
 })
 export class MemberMessagesComponent implements OnInit {
   @ViewChild('messageForm') messageForm: NgForm;
-  @Input() messages: Message[];
+  //@Input() messages: Message[];
   @Input() username: string;
   
   messageContent: string;
@@ -26,11 +26,9 @@ export class MemberMessagesComponent implements OnInit {
  
   sendMessage() {
     this.loading = true;
-    this.messageService.sendMessage(this.username, this.messageContent).subscribe(message => {
-      this.messages.push(message);
-      this.messageForm.reset();
-    }, error => { }, () => {
+    this.messageService.sendMessage(this.username, this.messageContent).then(() => {//then becasue its a promise not an observable
       this.loading = false;
+      this.messageForm.reset(); 
     });
   }
 

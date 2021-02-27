@@ -37,9 +37,9 @@ namespace WebUi.SignalR
             await _tracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
 
             //if (isOffline)
+            await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
             var currentUsers = await _tracker.GetOnlineUsers();
-
-                await Clients.Others.SendAsync("UserIsOffline", currentUsers);
+            await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
 
             await base.OnDisconnectedAsync(exception);
         }

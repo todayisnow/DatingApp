@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { MembersService } from '../../_services/members.service'
 import { Member } from "../../_models/member";
@@ -8,12 +8,16 @@ import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { MessageService } from 'src/app/_services/message.service';
 import { Message } from 'src/app/_models/message';
 import { PresenceService } from '../../_services/presence.service';
+import { AccountService } from "../../_services/account.service";
+import { User } from "../../_models/user";
+import {take} from 'rxjs/operators'
+
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
   styleUrls: ['./member-detail.component.css']
 })
-export class MemberDetailComponent implements OnInit {
+export class MemberDetailComponent implements OnInit , OnDestroy{
   @ViewChild('memberTabs', {static:true}) memberTabs: TabsetComponent;//static to fast detect chnages before change detection runs
   activeTab: TabDirective;
   member: Member;
@@ -21,12 +25,19 @@ export class MemberDetailComponent implements OnInit {
   galleryImages: NgxGalleryImage[];
   messages: Message[] = [];
 
-
+  user:User;
   constructor(private memberService: MembersService,
     private route: ActivatedRoute,
     private messageService: MessageService,
     public presence: PresenceService,
-  private toastr: ToastrService) { }
+    public accountService: AccountService,
+    private toastr: ToastrService) {
+
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user =>  this.user = user );
+  }
+    ngOnDestroy(): void {
+       this.messageService.stopHubConnection();
+    }
 
   ngOnInit(): void {
    // this.loadMember();
@@ -75,8 +86,11 @@ export class MemberDetailComponent implements OnInit {
   onTabActivated(data: TabDirective) {
     
     this.activeTab = data;
-    if (this.activeTab.heading === 'Messages' && this.messages.length===0) {
-      this.loadMessages();
+    if (this.activeTab.heading === 'Messages' && this.messages.length === 0) {
+      //this.loadMessages();
+      this.messageService.createHubConnection(this.user, this.member.username);
+    } else {
+      this.messageService.stopHubConnection();
     }
   }
   selectTab(tabId: number) {
