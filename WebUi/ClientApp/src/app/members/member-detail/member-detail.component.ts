@@ -1,4 +1,7 @@
-import { Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+
+
 import { ActivatedRoute } from "@angular/router";
 import { MembersService } from '../../_services/members.service'
 import { Member } from "../../_models/member";
@@ -31,9 +34,11 @@ export class MemberDetailComponent implements OnInit , OnDestroy{
     private messageService: MessageService,
     public presence: PresenceService,
     public accountService: AccountService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private router :Router) {
 
-    this.accountService.currentUser$.pipe(take(1)).subscribe(user =>  this.user = user );
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false; // so it should refress the reouter if the user click on new messgae of  userA while he's viewing message of userB
   }
     ngOnDestroy(): void {
        this.messageService.stopHubConnection();

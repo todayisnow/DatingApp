@@ -20,26 +20,25 @@ namespace WebUi.SignalR
         public override async Task OnConnectedAsync()
         {
 
-         //   var isOnline =
+           var isOnline =
                 await _tracker.UserConnected(Context.User.GetUsername(), Context.ConnectionId);
-            //if (isOnline)
+            if (isOnline)
                 await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
 
             var currentUsers = await _tracker.GetOnlineUsers();
-            await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
+            await Clients.Caller.SendAsync("GetOnlineUsers", currentUsers);
 
-            //await Clients.Caller.SendAsync("GetOnlineUsers", currentUsers);
+           
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            //var isOffline =
+            var isOffline =
             await _tracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
 
-            //if (isOffline)
+            if (isOffline)
             await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
-            var currentUsers = await _tracker.GetOnlineUsers();
-            await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
+           
 
             await base.OnDisconnectedAsync(exception);
         }

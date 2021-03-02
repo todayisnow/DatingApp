@@ -11,7 +11,7 @@ namespace WebUi.SignalR
         private static readonly Dictionary<string, List<string>> OnlineUsers =
             new Dictionary<string, List<string>>();
 
-        public Task UserConnected(string username, string connectionId)
+        public Task<bool> UserConnected(string username, string connectionId)
         {
             bool isOnline = false;
             lock (OnlineUsers)// becaue dic is not thread safe so we lock it to prevent concurrent adding
@@ -27,15 +27,15 @@ namespace WebUi.SignalR
                 }
             }
 
-            return Task.CompletedTask;//.FromResult(isOnline);
+            return Task.FromResult(isOnline);
         }
 
-        public Task UserDisconnected(string username, string connectionId)
+        public Task<bool> UserDisconnected(string username, string connectionId)
         {
             bool isOffline = false;
             lock (OnlineUsers)
             {
-                if (!OnlineUsers.ContainsKey(username)) return Task.CompletedTask;//.FromResult(isOffline);
+                if (!OnlineUsers.ContainsKey(username)) return Task.FromResult(isOffline);
 
                 OnlineUsers[username].Remove(connectionId);
                 if (OnlineUsers[username].Count == 0)
@@ -45,7 +45,7 @@ namespace WebUi.SignalR
                 }
             }
 
-            return Task.CompletedTask;// .FromResult(isOffline);
+            return Task.FromResult(isOffline);
         }
 
         public Task<string[]> GetOnlineUsers()
