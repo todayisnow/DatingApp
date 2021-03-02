@@ -86,12 +86,7 @@ namespace WebUi.Data
                 .Select(x => x.Gender).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            var result = await _context.SaveChangesAsync();
-            return result>0 ;
-        }
-
+     
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.Users

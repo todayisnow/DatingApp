@@ -15,6 +15,6 @@ namespace WebUi.Interfaces
         Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
         Task<MemberDto> GetMemberAsync(string username);
         Task<string> GetUserGender(string username);
-        Task<bool> SaveAllAsync();
+        
     }
 }

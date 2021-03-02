@@ -111,7 +111,7 @@ namespace WebUi.Data
                     message.DateRead = DateTime.UtcNow;
                 }
 
-                await _context.SaveChangesAsync();
+                
             }
             // .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
             return _mapper.Map<IEnumerable<MessageDto>>(messages);
@@ -121,10 +121,6 @@ namespace WebUi.Data
         {
             _context.Connections.Remove(connection);
         }
-        public async Task<bool> SaveAllAsync()
-        {
-            var result = await _context.SaveChangesAsync();
-            return result > 0;
-        }
+      
     }
 }
