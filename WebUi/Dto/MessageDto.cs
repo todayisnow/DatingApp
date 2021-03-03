@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace WebUi.Dto
 {
-    public class MessageDto
+    public class  MessageDto
     {
         public int Id { get; set; }
         public int SenderId { get; set; }
@@ -16,7 +16,7 @@ namespace WebUi.Dto
         public DateTime? DateRead { get; set; }
         public DateTime MessageSent { get; set; }
 
-        [JsonIgnore]
+        [JsonIgnore]//not sent to client
         public bool SenderDeleted { get; set; }
 
         [JsonIgnore]

@@ -89,12 +89,12 @@ namespace WebUi.Controllers
         }
 
 
-        [HttpGet("thread/{username}")]
-        public async  Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username)
-        {
-            var currentUername = User.GetUsername();
-            return Ok(await _unitOfWork.MessageRepository.GetMessageThread(currentUername, username));
-        }
+        //[HttpGet("thread/{username}")]
+        //public async  Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username)
+        //{
+        //    var currentUername = User.GetUsername();
+        //    return Ok(await _unitOfWork.MessageRepository.GetMessageThread(currentUername, username));
+        //}
 
     }
 }
