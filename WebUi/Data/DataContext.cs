@@ -61,7 +61,7 @@ namespace WebUi.Data
                 .WithMany(l => l.LikedByUsers)
                 .HasForeignKey(s => s.LikedUserId)
                 .OnDelete(DeleteBehavior.Cascade);
-
+            builder.ApplyUtcDateTimeConverter();
           
         }
     }
