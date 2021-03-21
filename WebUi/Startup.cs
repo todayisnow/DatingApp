@@ -31,6 +31,7 @@ namespace WebUi
         public Startup(IConfiguration configuration)
         {
             Config = configuration;
+            int c = 0;
         }
 
         public IConfiguration Config { get; }
