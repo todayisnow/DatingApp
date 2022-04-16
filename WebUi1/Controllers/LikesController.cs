@@ -1,13 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using WebUi1.Dto;
-using WebUi1.Entities;
-using WebUi1.Extensions;
-using WebUi1.Helpers;
-using WebUi1.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
 namespace WebUi1.Controllers
 {
     [Authorize]
@@ -20,7 +10,7 @@ namespace WebUi1.Controllers
         {
             _unitOfWork = unitOfWork;
 
-            
+
         }
 
         [HttpPost("{username}")]

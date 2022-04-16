@@ -1,13 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-
-namespace WebUi1.Controllers
+﻿namespace WebUi1.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -27,7 +18,7 @@ namespace WebUi1.Controllers
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
-        { 
+        {
             var rng = new Random();
             _logger.LogInformation("Hello, {Name}!", rng);
 
@@ -38,8 +29,8 @@ namespace WebUi1.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
-            
+
         }
     }
-  
+
 }

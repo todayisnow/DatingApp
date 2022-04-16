@@ -1,20 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing.Matching;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
-using WebUi1.Entities;
-using WebUi1.Data;
-using WebUi1.Dto;
-using WebUi1.Extensions;
-using WebUi1.Interfaces;
-using WebUi1.Helpers;
+﻿
 
 namespace WebUi1.Controllers
 {
@@ -25,22 +9,22 @@ namespace WebUi1.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
-       
+
 
 
         public UsersController(IUnitOfWork unitOfWork,
-            IMapper mapper,IPhotoService photoService)
+            IMapper mapper, IPhotoService photoService)
         {
-            
+
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _photoService = photoService;
-           
+
         }
 
         [HttpGet]
-        
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
+
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
             var gender = await _unitOfWork.UserRepository.GetUserGenderAsync(User.GetUsername());
             userParams.CurrentUsername = User.GetUsername();
@@ -53,30 +37,30 @@ namespace WebUi1.Controllers
             Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
 
 
-           
-           return  Ok(users);
+
+            return Ok(users);
 
 
         }
 
 
-        [HttpGet("{username}",Name = "GetUser")]
-       
+        [HttpGet("{username}", Name = "GetUser")]
+
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            
+
             return await _unitOfWork.UserRepository.GetMemberAsync(username);
 
         }
         [HttpPut]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto member)
         {
-           
+
             var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
             _mapper.Map(member, user);
             _unitOfWork.UserRepository.Update(user);
             return await _unitOfWork.Complete()
-                ? (ActionResult) NoContent()
+                ? (ActionResult)NoContent()
                 : BadRequest("Failed to update user");
         }
 
@@ -94,12 +78,12 @@ namespace WebUi1.Controllers
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId = result.PublicId
             };
-            if(user.Photos.Count == 0 ) photo.IsMain = true;
+            if (user.Photos.Count == 0) photo.IsMain = true;
             user.Photos.Add(photo);
             if (await _unitOfWork.Complete())
             {
                 //return CreatedAtRoute("GetUser", _mapper.Map<PhotoDto>(photo));
-                return CreatedAtRoute("GetUser", new { username = user.UserName},_mapper.Map<PhotoDto>(photo));
+                return CreatedAtRoute("GetUser", new { username = user.UserName }, _mapper.Map<PhotoDto>(photo));
             }
 
             return BadRequest("Can not upload");
@@ -112,7 +96,7 @@ namespace WebUi1.Controllers
             var photo = user.Photos.FirstOrDefault(m => m.Id == photoId);
             if (photo.IsMain) return BadRequest("This is Main Photo");
             var currentMain = user.Photos.FirstOrDefault(m => m.IsMain);
-            if(currentMain!=null)
+            if (currentMain != null)
             {
                 currentMain.IsMain = false;
             }
@@ -130,9 +114,9 @@ namespace WebUi1.Controllers
                 return NotFound();
             if (photo.IsMain)
                 return BadRequest("Cant Delete main photo");
-            if(photo.PublicId!=null)//delete from cloudinary
+            if (photo.PublicId != null)//delete from cloudinary
             {
-                var result =await _photoService.DeletePhotoAsync(photo.PublicId);
+                var result = await _photoService.DeletePhotoAsync(photo.PublicId);
                 if (result.Error != null)
                     return BadRequest(result.Error.Message);
             }

@@ -1,5 +1,4 @@
 using System.IO;
-using Microsoft.AspNetCore.Mvc;
 
 namespace WebUi1.Controllers
 {
@@ -7,7 +6,7 @@ namespace WebUi1.Controllers
     {
         public ActionResult Index()
         {
-            return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), 
+            return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(),
                 "wwwroot", "index.html"), "text/HTML");
         }
     }
