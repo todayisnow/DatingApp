@@ -21,16 +21,16 @@
 
     <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
       <img src="{{user.photoUrl || '../assets/user.png'}}" alt="{{user.username}}" />
-      <a class="dropdown-toggle text-right ml-2" dropdownToggle>Welcome {{user.knownAs || user.username | titlecase}}</a>
+      <a class="dropdown-toggle text-right ms-2 text-decoration-none" dropdownToggle>Welcome {{user.knownAs || user.username | titlecase}}</a>
       <div class="dropdown-menu mt-3" *dropdownMenu>
         <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" (click)="logout()">Logout</a>
       </div>
     </div>
-    <form #loginForm="ngForm" *ngIf="(accountService.currentUser$ | async)=== null" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()" autocomplete="off">
-      <input class="form-control mr-sm-2" type="text" placeholder="Username" name="username" [(ngModel)]="model.username" tooltip="Username">
-      <input class="form-control mr-sm-2" type="password" placeholder="Password" name="password" [(ngModel)]="model.password" tooltip="Password">
+    <form #loginForm="ngForm" *ngIf="(accountService.currentUser$ | async)=== null" class="d-flex mt-2 mt-md-0" (ngSubmit)="login()" autocomplete="off">
+      <input class="form-control me-sm-2" type="text" placeholder="Username" name="username" [(ngModel)]="model.username" tooltip="Username">
+      <input class="form-control me-sm-2" type="password" placeholder="Password" name="password" [(ngModel)]="model.password" tooltip="Password">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
     </form>
 
