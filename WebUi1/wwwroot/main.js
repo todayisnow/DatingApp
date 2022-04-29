@@ -3354,16 +3354,10 @@ class MessagesComponent {
         });
     }
     pageChanged(event) {
-        this.confirmService.confirm(this.pageNumber + "", event.page)
-            .subscribe(result => {
-            if (result)
-                this.messageService.deleteMessage(1).subscribe(() => {
-                    this.messages.splice(this.messages.findIndex(m => m.id === 1), 1);
-                });
-        });
-        this.pageNumber = event.page;
-        this.loadMessages();
-        ;
+        if (this.pageNumber !== event.page) {
+            this.pageNumber = event.page;
+            this.loadMessages();
+        }
     }
 }
 MessagesComponent.ɵfac = function MessagesComponent_Factory(t) { return new (t || MessagesComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_message_service__WEBPACK_IMPORTED_MODULE_0__.MessageService), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_confirm_service__WEBPACK_IMPORTED_MODULE_1__.ConfirmService)); };
